@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>轮播图</title>
+    <style type="text/css">
+        *{margin: 0;padding: 0;text-decoration: none;}
+        #container{overflow: hidden; width: 1024px;height: 683px;border: 0px solid #cb1b45;position: relative;}
+        #container2{height:683px; width: 300px;}
+        #list{width: 9216px; height: 683px; position: absolute;z-index: 1;transition: 0.7s;}
+        #list img{float: left;}
+        #buttons{position: absolute; height: 15px; width: 224px; z-index: 2; bottom: 30px; left: 400px;}
+        #buttons span{cursor:pointer; float: left;border: 1px solid #fff; width: 15px; height: 15px; border-radius: 50%; background: #6c6024; margin-right: 5px;}
+        #buttons .on{background-color: orangered;}
+        .arrow{cursor: pointer; display: none; line-height: 39px; text-align: center; font-size: 39px; font-weight: bold; width: 40px; height: 40px;  position: absolute; z-index: 2; top: 330px; background-color: RGBA(0,0,0,.3); color: red;}
+        .arrow :hover{background-color: rgb(0,0,0,.8);}
+        #container:hover .arrow{display: block;}
+        #prev{left: 20px;}
+        #next{right: 20px;}
+    </style>
+    <script>
+        window.onload =function(){
+            var container = document.getElementById('container');
+            var list = document.getElementById('list');
+            var buttons =document.getElementsByTagName('span');
+            var prev=document.getElementById('prev');
+            var next=document.getElementById('next');
+            function showButton() {
+                for (var i = 0; i < buttons.length ; i++) {
+                    if( buttons[i].className == 'on'){
+                        buttons[i].className = '';
+                        break;
+                    }
+                }
+                buttons[index-1].className = 'on';
+            }
+
+            next.onclick=function next(){
+                list.style.transition="0.7s";//设置点击next时有0.7s过渡
+                var newnext=parseInt(list.style.left) -1024 ;
+               
+                list.style.left= parseInt(list.style.left) -1024+'px';
+                if (newnext< -7168){
+                    list.style.left= -1024+'px';
+                    list.style.transition="none";//设置从最后一张返回第一张时取消过渡动画
+                    buttons[6].className='';
+                }
+                var index2=parseInt(list.style.left)/(-1024);
+                buttons[index2 - 1].className="on";
+                buttons[index2 - 2].className = '';
+            }
+            prev.onclick=function prev(){
+                list.style.transition="0.7s";//设置点击prev时有0.7s过渡
+                var newprev=parseInt(list.style.left) +1024 ;
+                list.style.left= parseInt(list.style.left) +1024+'px';
+                if (newprev> -1024){
+                    list.style.left= -7168+'px';
+                    list.style.transition="none";//设置从第一张返回最后一张时取消过渡动画
+                    buttons[0].className='';
+                }
+                var index2=parseInt(list.style.left)/(-1024);
+                buttons[index2 - 1].className="on";
+                buttons[index2].className = '';
+            }
+            for (var i=0; i< buttons.length; i++ ){
+                buttons[i].onclick = function(){
+                    var myindex= parseInt(this.getAttribute('index'));
+                    var newprev2 = -1024*(myindex);
+                    list.style.transition= "0.7s";//debug
+                    list.style.left= newprev2 +'px';
+                    index=myindex;
+                    showButton();
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="container" style="float:left;">
+        <div id="list" style="left: -1024px;">
+            <img src="images/007.jpg">
+            <img src="images/001.jpg">
+            <img src="images/002.jpg">
+            <img src="images/003.jpg">
+            <img src="images/004.jpg">
+            <img src="images/005.jpg">
+            <img src="images/006.jpg">
+            <img src="images/007.jpg">
+            <img src="images/001.jpg">
+        </div>
+        <div id="buttons">
+            <span index="1" class="on"></span>
+            <span index="2"></span>
+            <span index="3"></span>
+            <span index="4"></span>
+            <span index="5"></span>
+            <span index="6"></span>
+            <span index="7"></span>
+        </div>
+        <a href="javascript:;" class="arrow" id="prev">&lt;</a>
+        <a href="javascript:;" class="arrow" id="next">&gt;</a>
+    </div>
+    <div id="container2" style="float: left;">
+        <h1 style="font-size:40px;">新年快乐！</h1>
+    </div>
+    
+</body>
+</html>
