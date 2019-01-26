@@ -27,6 +27,7 @@
             var buttons =document.getElementsByTagName('span');
             var prev=document.getElementById('prev');
             var next=document.getElementById('next');
+            var timer;
             function showButton() {
                 for (var i = 0; i < buttons.length ; i++) {
                     if( buttons[i].className == 'on'){
@@ -35,6 +36,14 @@
                     }
                 }
                 buttons[index-1].className = 'on';
+            }
+            function play(){
+                timer=setInterval( function(){
+                    next.onclick();
+                },3000);
+            }
+            function stop(){
+                clearInterval(timer);
             }
 
             next.onclick=function next(){
@@ -74,6 +83,9 @@
                     showButton();
                 }
             }
+            container.onmouseover=stop;
+            container.onmouseleave=play;
+            play();
         }
     </script>
 </head>
