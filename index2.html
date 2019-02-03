@@ -24,11 +24,10 @@
         window.onload =function(){
             var container = document.getElementById('container');
             var list = document.getElementById('list');
-            var buttons = document.getElementById('buttons').getElementsByTagName('span');
+            var buttons =document.getElementsByTagName('span');
             var prev=document.getElementById('prev');
             var next=document.getElementById('next');
             var timer;
-            var index=1;
             function showButton() {
                 for (var i = 0; i < buttons.length ; i++) {
                     if( buttons[i].className == 'on'){
@@ -46,56 +45,33 @@
             function stop(){
                 clearInterval(timer);
             }
+
             next.onclick=function next(){
-                //play3();
-                list.style.transition="0.7s";
-                list.style.left=parseInt(list.style.left) -1024 +'px';
-                if (index == 7) {
-                    index = 1;
-                }
-                else {
-                    index += 1;
-                }
-                showButton();
-                if(parseInt(list.style.left)< -8192){
+                list.style.transition="0.7s";//设置点击next时有0.7s过渡
+                var newnext=parseInt(list.style.left) -1024 ;
+               
+                list.style.left= parseInt(list.style.left) -1024+'px';
+                if (newnext< -7168){
                     list.style.left= -1024+'px';
+                    list.style.transition="none";//设置从最后一张返回第一张时取消过渡动画
+                    buttons[6].className='';
                 }
+                var index2=parseInt(list.style.left)/(-1024);
+                buttons[index2 - 1].className="on";
+                buttons[index2 - 2].className = '';
             }
             prev.onclick=function prev(){
-                //play3();
-                list.style.transition="0.7s";
-                list.style.left=parseInt(list.style.left) +1024 +'px';
-                if (index == 1) {
-                    index = 7;
+                list.style.transition="0.7s";//设置点击prev时有0.7s过渡
+                var newprev=parseInt(list.style.left) +1024 ;
+                list.style.left= parseInt(list.style.left) +1024+'px';
+                if (newprev> -1024){
+                    list.style.left= -7168+'px';
+                    list.style.transition="none";//设置从第一张返回最后一张时取消过渡动画
+                    buttons[0].className='';
                 }
-                else {
-                    index -= 1;
-                }
-                showButton();
-            }
-            function play2(){//计时器二，在最后一张出现后隔1s模拟点击next按钮，让其变得像是有过渡动画...
-                timer2=setInterval( function(){
-                    var leftvalue= parseInt(list.style.left);
-                    if(leftvalue<=-8192){
-                        list.style.transition="none";
-                        list.style.left=-1024+'px';
-                    }
-                    else if(leftvalue>=0){
-                        list.style.transition="none";
-                        list.style.left= -7168+'px';
-                    }
-                },800);
-            }
-            function play3(){
-                var leftvalue= parseInt(list.style.left);
-                    if(leftvalue<=-8192){
-                        list.style.transition="none";
-                        list.style.left=-1024+'px';
-                    }
-                    else if(leftvalue>=0){
-                        list.style.transition="none";
-                        list.style.left= -7168+'px';
-                    }
+                var index2=parseInt(list.style.left)/(-1024);
+                buttons[index2 - 1].className="on";
+                buttons[index2].className = '';
             }
             for (var i=0; i< buttons.length; i++ ){
                 buttons[i].onclick = function(){
@@ -110,7 +86,6 @@
             container.onmouseover=stop;
             container.onmouseleave=play;
             play();
-            play2();
         }
     </script>
 </head>
